@@ -59,6 +59,9 @@ let rec starting_element list =
 [*----------------------------------------------------------------------------*)
 
 let rec multiply list =
+  match list with
+  | []-> 1
+  | glava1 :: rep1 -> glava1 * multiply rep1
 
 (*----------------------------------------------------------------------------*]
  Napišite funkcijo ekvivalentno python kodi:
@@ -75,7 +78,18 @@ let rec multiply list =
  - : int list = [-1; 7; 0]
 [*----------------------------------------------------------------------------*)
 
-let rec sum_int_pairs = ()
+let rec sum_int_pairs list =
+  match list with
+    | [] -> []
+    | (x,y)  :: rep1 -> [x+y] :: sum_int_pairs rep1
+
+(* let rec sum_int_pairs list =
+  match list with
+  | [] -> []
+  | el :: els -> (
+    match list with
+  )        dokoncej prepiši od Barbare*)
+
 
 (*----------------------------------------------------------------------------*]
  Funkcija [get k list] poišče [k]-ti element v seznamu [list]. Številčenje
@@ -86,7 +100,37 @@ let rec sum_int_pairs = ()
  - : int = 1
 [*----------------------------------------------------------------------------*)
 
-let rec get = ()
+(* let rec get k  list=
+  if k>0 then
+    match list with
+      | [] -> []
+      if k = 0 then
+      | glava1 :: rep1 -> glava1 
+      else
+      | glava1 :: rep1 -> get k-1 rep1
+  else
+      match list with
+      | [] -> []
+      | glava1 :: rep1 -> glava1 
+      
+      moja verzija treba še nekoliko popraviti*)
+
+let rec get k  list =
+  if k <= 0 then
+    match list with
+      | []-> failwith "List is too short."
+      | x :: xs -> x
+  else 
+    match list with
+      | [] -> failwith "List is too short."
+      | x :: xs -> get (k-1) xs
+(* popravimo *)
+
+let rec get k  list =
+    match list with
+      | [] -> failwith "List is too short."
+      | x :: xs -> if k <0 then x else get (k-1) xs
+
 
 (*----------------------------------------------------------------------------*]
  Funkcija [double] podvoji pojavitve elementov v seznamu.
@@ -95,7 +139,10 @@ let rec get = ()
  - : int list = [1; 1; 2; 2; 3; 3]
 [*----------------------------------------------------------------------------*)
 
-let rec double = ()
+let rec double list =
+  match list with
+    | [] -> []
+    | x :: xs -> x :: x :: double xs
 
 (*----------------------------------------------------------------------------*]
  Funkcija [insert x k list] na [k]-to mesto seznama [list] vrine element [x].
@@ -107,7 +154,10 @@ let rec double = ()
  - : int list = [1; 0; 0; 0; 0; 0]
 [*----------------------------------------------------------------------------*)
 
-let rec insert = ()
+let rec insert x k list=
+  match list with
+  | [] -> []
+  | glava1 :: rep1 -> if k = 0 then x :: rep1 else insert x (k-1) rep1
 
 (*----------------------------------------------------------------------------*]
  Funkcija [divide k list] seznam razdeli na dva seznama. Prvi vsebuje prvih [k]
