@@ -8,7 +8,14 @@
  - : int = 4
 [*----------------------------------------------------------------------------*)
 
-let rec square = ()
+let rec square x = x * x 
+
+(*alternetive*)
+
+(* let square x = x * x *)
+
+(*let square = ( fun x -> x*x*)
+
 
 (*----------------------------------------------------------------------------*]
  Funkcija [middle_of_triple] vrne srednji element trojice.
@@ -17,7 +24,16 @@ let rec square = ()
  - : bool = false
 [*----------------------------------------------------------------------------*)
 
-let rec middle_of_triple = ()
+let rec middle_of_triple triple = 
+  match triple with
+  | (x, y, z) -> y
+
+let middle_of_triple triple = function
+| (x,y,z) -> y
+
+let rec middle_of_triple (x,y,z) = y
+
+let rec middle_of_triple (_,y,_) = y
 
 (*----------------------------------------------------------------------------*]
  Funkcija [starting_element] vrne prvi element danega seznama. V primeru
@@ -27,7 +43,12 @@ let rec middle_of_triple = ()
  - : int = 1
 [*----------------------------------------------------------------------------*)
 
-let rec starting_element = ()
+let rec starting_element list =
+  match list with
+  | [] -> failwith "Empty list has no elements."
+  | x :: xs -> x
+
+  let _ = assert (starting_element[1;2;3;4] = 1)  (*to dela ko test da ne rabis v terminal pisat, ne vrne nič razen če je narobe vrne assert faliur *) 
 
 (*----------------------------------------------------------------------------*]
  Funkcija [multiply] zmnoži vse elemente seznama. V primeru praznega seznama
@@ -37,7 +58,7 @@ let rec starting_element = ()
  - : int = 48
 [*----------------------------------------------------------------------------*)
 
-let rec multiply = ()
+let rec multiply list =
 
 (*----------------------------------------------------------------------------*]
  Napišite funkcijo ekvivalentno python kodi:
