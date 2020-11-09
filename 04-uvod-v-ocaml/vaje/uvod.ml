@@ -156,8 +156,20 @@ let rec double list =
 
 let rec insert x k list=
   match list with
-  | [] -> []
-  | glava1 :: rep1 -> if k = 0 then x :: rep1 else insert x (k-1) rep1
+  | [] -> [x]
+  | glava1 :: rep1 ->
+       if k <= 0 then
+        x :: glava1 :: rep1 
+      else 
+      glava1 :: (insert x (k-1) rep1)
+
+let rec insert x k = function
+  | []-> [x]
+  | y :: ys when k <= -> x :: y :: ys
+  | y :: ys (* when k > 0 *) -> y :: (insert x (k-1) ys)
+
+
+  (*pogota napaka*)
 
 (*----------------------------------------------------------------------------*]
  Funkcija [divide k list] seznam razdeli na dva seznama. Prvi vsebuje prvih [k]
