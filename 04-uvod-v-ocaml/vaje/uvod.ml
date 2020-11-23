@@ -163,11 +163,11 @@ let rec insert x k list=
       else 
       glava1 :: (insert x (k-1) rep1)
 
-let rec insert x k = function
+(* let rec insert x k = function
   | []-> [x]
   | y :: ys when k <= -> x :: y :: ys
   | y :: ys (* when k > 0 *) -> y :: (insert x (k-1) ys)
-
+ *)
 
   (*pogota napaka*)
 
@@ -181,8 +181,20 @@ let rec insert x k = function
  # divide 7 [1; 2; 3; 4; 5];;
  - : int list * int list = ([1; 2; 3; 4; 5], [])
 [*----------------------------------------------------------------------------*)
+(* 
+let rec divide list k =
+  match list with
+    | []->[]
+    | glava1 :: rep1
+      glava = [glava1]
+      if k=0 then
+        ([],list)
+      elseif k=1 then
+        (glava,rep1)
+      else
+        glava = glava1 :: glava
+        divide rep1 (k-1) *)
 
-let rec divide = ()
 
 (*----------------------------------------------------------------------------*]
  Funkcija [rotate n list] seznam zavrti za [n] mest v levo. Predpostavimo, da
