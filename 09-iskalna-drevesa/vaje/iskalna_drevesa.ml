@@ -1,11 +1,12 @@
 (* ========== Vaja 4: Iskalna Drevesa  ========== *)
 
+(* NA POL NARJENO NUJNO POGLEJ IN PREPIŠI/REŠI NALOGE DO KONCA, PRIBLIŽNO NA POL SM *)
 (*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*]
  Ocaml omogoča enostavno delo z drevesi. Konstruiramo nov tip dreves, ki so
  bodisi prazna, bodisi pa vsebujejo podatek in imajo dve (morda prazni)
  poddrevesi. Na tej točki ne predpostavljamo ničesar drugega o obliki dreves.
 [*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*)
-
+type 'a tree = Node of 'a tree * 'a * 'a tree | Empty
 
 (*----------------------------------------------------------------------------*]
  Definirajmo si testni primer za preizkušanje funkcij v nadaljevanju. Testni
@@ -18,6 +19,10 @@
       0   6   11
 [*----------------------------------------------------------------------------*)
 
+let leaf x = Node (Empty, x, Empty)
+
+let test =
+   Node (Node(leaf 0, 2, Empty), 5, Node( leaf 6, 7, leaf 11))
 
 (*----------------------------------------------------------------------------*]
  Funkcija [mirror] vrne prezrcaljeno drevo. Na primeru [test_tree] torej vrne
@@ -32,6 +37,9 @@
  Node (Node (Node (Empty, 11, Empty), 7, Node (Empty, 6, Empty)), 5,
  Node (Empty, 2, Node (Empty, 0, Empty)))
 [*----------------------------------------------------------------------------*)
+let rec mirror = function
+   | Empty -> Empty
+   | Node(lt, x, rt) -> Node (mirror rt, x, mirror lt )
 
 
 (*----------------------------------------------------------------------------*]
@@ -43,6 +51,13 @@
  # size test_tree;;
  - : int = 6
 [*----------------------------------------------------------------------------*)
+let rec height = function
+  | Empty -> 0
+  | Node (lt, x, rt) ->
+    let l_height = height lt in
+    let r_height = height rt in
+    (max l_height r_height) +1
+    (* let rec size = function *)
 
 
 (*----------------------------------------------------------------------------*]
@@ -55,6 +70,17 @@
  Node (Node (Empty, true, Empty), true, Node (Empty, true, Empty)))
 [*----------------------------------------------------------------------------*)
 
+let rec map_tree (f: 'a -> 'b) (tree : 'a tree): 'b tree =
+  match tree with
+  | Empty -> Empty
+  | Node (lt, x, rt) -> Node (map_tree f lt, f x, map_tree f rt)
+
+  let rec size = function
+    | Empty -> 0
+    | Node(lt, x, rt) -> size lt + size rt +1
+  
+
+
 
 (*----------------------------------------------------------------------------*]
  Funkcija [list_of_tree] pretvori drevo v seznam. Vrstni red podatkov v seznamu
@@ -63,7 +89,12 @@
  # list_of_tree test_tree;;
  - : int list = [0; 2; 5; 6; 7; 11]
 [*----------------------------------------------------------------------------*)
-
+let rec list_of_tree = function
+  | Empty -> []
+  | Node (lt, x, rt) ->
+    let l_list = list_of_tree lt in
+    let r_list = list_of_tree rt in
+    l_list @ [x] @ r_list
 
 (*----------------------------------------------------------------------------*]
  Funkcija [is_bst] preveri ali je drevo binarno iskalno drevo (Binary Search 
@@ -75,6 +106,36 @@
  # test_tree |> mirror |> is_bst;;
  - : bool = false
 [*----------------------------------------------------------------------------*)
+
+let is_bts tree = 
+  let rec is_orderd = function
+    | [] -> true
+    | x :: [] -> true
+    | x :: y :: others ->
+       if x < y then is_orderd (y :: others)
+       else false
+  in
+  tree |> list_of_tree|> is_orderd
+
+let is_bts tree = 
+  let rec within_bounds low high = function
+  | Empty -> true
+  | Node (lt, x, rt) ->
+  let low_bound_ok =
+    match low with
+    | Some l -> l < x
+    | None -> true
+  in
+  let high_bound_ok =
+    match high with
+    | Some h -> x < h
+    | None -> true
+  in
+    low_bound_ok  && high_bound_ok
+    && (within_bounds low Some x lt) 
+    &&(within_bounds Some x high rt)
+  in
+  within_bounds None None tree
 
 
 (*-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=*]
